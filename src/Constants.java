@@ -1,5 +1,5 @@
 
-public class C {
+public class Constants {
 
 	public static double q=1.612177*EE(-19); //Electron Charge (C)
 	public static double t=300; //Temperature in Kelvin
