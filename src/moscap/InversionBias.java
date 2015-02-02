@@ -1,3 +1,6 @@
+package moscap;
+import util.Constants;
+
 
 public class InversionBias extends MOSCAP {
 

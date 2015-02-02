@@ -1,3 +1,6 @@
+package moscap;
+import util.Constants;
+
 
 public class ThresholdMOSCAP extends MOSCAP {
 	//At the Threshold Voltage for MOSCAP

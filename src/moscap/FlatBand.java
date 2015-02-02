@@ -1,3 +1,6 @@
+package moscap;
+import util.Constants;
+
 
 public class FlatBand extends MOSCAP {
 //34

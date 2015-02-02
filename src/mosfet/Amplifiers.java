@@ -1,3 +1,6 @@
+package mosfet;
+import util.Constants;
+
 
 public class Amplifiers {
 

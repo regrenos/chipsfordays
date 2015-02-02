@@ -1,3 +1,7 @@
+package mosfet;
+import util.Constants;
+import moscap.MOSCAP;
+
 
 public class MOSFET {
 

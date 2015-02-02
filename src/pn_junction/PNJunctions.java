@@ -1,3 +1,6 @@
+package pn_junction;
+import util.Constants;
+
 
 public class PNJunctions {
 

@@ -1,3 +1,6 @@
+package moscap;
+import util.Constants;
+
 
 public class DepletionMOSCAP extends MOSCAP{
 	//Depletion Bias Range for MOSCAP
