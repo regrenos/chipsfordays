@@ -21,14 +21,14 @@ public class BipolarJunctionTransistor {
 	 * @return - the bias range of the BJT
 	 */
 	public static String determineBiasRange(double vBE, double vBC) {
-		if (vBE < 0) {
-			if (vBC < 0) {
+		if (vBE <= 0) {
+			if (vBC <= 0) {
 				return "Cut-off";
 			} else {
 				return "Reverse-active";
 			}
 		} else {
-			if (vBC < 0) {
+			if (vBC <= 0) {
 				return "Forward-active";
 			} else {
 				return "Saturation";

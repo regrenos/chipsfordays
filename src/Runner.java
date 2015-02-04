@@ -1,33 +1,33 @@
-import pn_junction.PNJunctions;
-import util.Constants;
-import util.Physics;
-import moscap.MOSCAP;
-import mosfet.Amplifiers;
-import mosfet.MOSFET;
+import bjt.BipolarJunctionTransistor;
+import bjt.bias_range_current_approximations.CutOffRange;
+import bjt.bias_range_current_approximations.ForwardActiveRange;
+
 
 
 public class Runner {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		Physics.u_pN(3.25E16);
-		Physics.u_nP(4.5E17);
-		Physics.L_pN(Physics.Dp(437.84, Constants.t),Physics.tau_recN(3.25E16));
-		Physics.L_nP(Physics.Dn(437.84, Constants.t), Physics.tau_recP(4.5E17));
-		PNJunctions.Vbi(4.5E17, 3.25E16);
+		String biasRange = BipolarJunctionTransistor.determineBiasRange(0.65, 0);
+		System.out.println(biasRange);
+		double betaR = BipolarJunctionTransistor.commonBaseToCommonEmitterGain(0.55);
+		System.out.println("Beta R: " + betaR);
+		double iS = ForwardActiveRange.saturationCurrentFromCollectorCurrent(275e-6, 0.65, 0.55);
+		System.out.println("iS: " + iS);
+		double betaF = ForwardActiveRange.betaFFromBaseCurrent(iS, 3e-6, 0.65);
+		System.out.println("Beta F: " + betaF);
+			
+		biasRange = BipolarJunctionTransistor.determineBiasRange(0, -5);
+		System.out.println(biasRange);
+		double iCBS = CutOffRange.collectorCurrent(1e-16, BipolarJunctionTransistor.commonEmitterToCommonBaseGain(1));
+		System.out.println("iCBS: " + iCBS);
 		
-		MOSCAP.PhiPm(2.5E16);
-		Amplifiers.gmsat(120E-6, 3.69, 0.40);
-		Amplifiers.Idq(120E-6, 3.69, 0.40);
-		Inverter.Vol(3.3, 0.5, 250E-6, 15000);
-		
-		MOSFET.vtn0(1.2E18, 22E-8, 3.2E10*Constants.q);
-		MOSFET.VDsat(1.2, 0, 1.2E18, 22E-8, 3.2E10*Constants.q);
-		MOSFET.IDsat(0, 154.11*MOSCAP.Cox(22E-8)*(4/.1),0.8409462560512138+0.5 , 1.2, 0, 1.2E18, 22E-8,3.2E10*Constants.q);
+		biasRange = BipolarJunctionTransistor.determineBiasRange(-1, 0);
+		System.out.println(biasRange);
+		betaF = ForwardActiveRange.betaFFromDefinition(5e-3, 60e-6);
+		System.out.println("Beta F:" + betaF);
+		betaF = ForwardActiveRange.betaFFromDefinition(7e-3, 80e-6);
+		System.out.println("Beta F:" + betaF);
+		betaF = ForwardActiveRange.betaFFromDefinition(10e-3, 100e-6);		
+		System.out.println("Beta F:" + betaF);
 	}
-	
-
-
 }
