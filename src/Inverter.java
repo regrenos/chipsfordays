@@ -35,7 +35,7 @@ public class Inverter {
 	/** Equation for V output low */
 	public static double Vol(double Vdd, double Vtn, double Kn, double Rl) {
 		double result = (Vdd - Vtn + (1 / (Kn * Rl)))
-				- Math.sqrt(Constants.p((Vdd - Vtn + 1 / (Kn * Rl)), 2)
+				- Math.sqrt(Math.pow((Vdd - Vtn + 1 / (Kn * Rl)), 2)
 						- (2 * Vdd) / (Kn * Rl));
 		System.out.print("Vol (V output low) (V): ");
 		return Constants.s(result);
@@ -51,7 +51,7 @@ public class Inverter {
 	public static double Vih(double Vtn, double Vdd, double Kn, double Rl) {
 		System.out.print("Vih(V input high) (V): ");
 		return Constants.s(Vtn - 1 / (Kn * Rl)
-				+ Constants.p((8 * Vdd) / (3 * Kn * Rl), 1 / 2));
+				+ Math.pow((8 * Vdd) / (3 * Kn * Rl), 1 / 2));
 	}
 
 	/** Equation for Static Noise Margin Low */
@@ -60,22 +60,22 @@ public class Inverter {
 		return Constants.s(2
 				* Vtn
 				- Vdd
-				+ Math.sqrt(Constants.p(Vdd - Vtn + 1 / (Kn * Rl), 2)
-						- (2 * Vdd) / (Kn * Rl)));
+				+ Math.sqrt(Math.pow(Vdd - Vtn + 1 / (Kn * Rl), 2) - (2 * Vdd)
+						/ (Kn * Rl)));
 	}
 
 	/** Equation for Static Noise Margin High */
 	public static double SNMh(double Vdd, double Vtn, double Kn, double Rl) {
 		System.out.print("Static Noise margin High: ");
 		return Constants.s(Vdd - Vtn + 1 / (Kn * Rl)
-				- Constants.p((8 * Vdd) / (3 * Kn * Rl), 1 / 2));
+				- Math.pow((8 * Vdd) / (3 * Kn * Rl), 1 / 2));
 	}
 
 	/** Equation for Static Current at Vin=Voh */
 	public static double IddVoh(double Vtn, double Vdd, double Kn, double Rl) {
 		System.out.print("Static Currenat At Vin = Voh: ");
-		return Constants.s((Vtn - 1 / (Kn * Rl) + Math.sqrt(Constants.p(Vdd
-				- Vtn + 1 / (Kn * Rl), 2)
+		return Constants.s((Vtn - 1 / (Kn * Rl) + Math.sqrt(Math.pow(Vdd - Vtn
+				+ 1 / (Kn * Rl), 2)
 				- (2 * Vdd) / (Kn * Rl)))
 				/ Rl);
 	}
@@ -84,7 +84,7 @@ public class Inverter {
 	public static double PddVoh(double Vtn, double Vdd, double Kn, double Rl) {
 		System.out.print("Static Power at Vin = Voh: ");
 		return Constants.s((Vdd / Rl)
-				* (Vtn - 1 / (Kn * Rl) + Math.sqrt(Constants.p(Vdd - Vtn + 1
+				* (Vtn - 1 / (Kn * Rl) + Math.sqrt(Math.pow(Vdd - Vtn + 1
 						/ (Kn * Rl), 2)
 						- (2 * Vdd) / (Kn * Rl))));
 	}

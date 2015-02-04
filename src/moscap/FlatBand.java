@@ -26,7 +26,7 @@ public class FlatBand extends MOSCAP {
 
 	public static double nb(double Na) {
 		System.out.print("Electron concentration in bulk:  ");
-		return Constants.s(Constants.p(Constants.ni, 2) / Na);
+		return Constants.s(Math.pow(Constants.ni, 2) / Na);
 	}
 
 	public static double pb(double Na) {

@@ -48,7 +48,7 @@ public class SmallSignalMOSFET {
 	public static double fT(double mu, double Lch, double VGS, double VBS,
 			double Na, double Xox, double QfQit) {
 		double vtn = MOSFET.Vtn(VBS, Na, Xox, QfQit);
-		double result = ((3 * mu) / (4 * Math.PI * Constants.p(Lch, 2)))
+		double result = ((3 * mu) / (4 * Math.PI * Math.pow(Lch, 2)))
 				* (VGS - vtn);
 		System.out.print("This weird T frequency is: ");
 		return Constants.s(result);

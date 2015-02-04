@@ -2,15 +2,15 @@ package util;
 
 public class Physics {
 
-	public static final double NC_300K = 2.86 * Constants.EE(19); // cm^-3
-	public static final double NV_300K = 3.10 * Constants.EE(19); // cm^-3
+	public static final double NC_300K = 2.86e19; // cm^-3
+	public static final double NV_300K = 3.10e19; // cm^-3
 
 	/** Density of States in the Conduction Band */
 	public static double gc(double E_minus_Ec) { // Review 1.16
 		System.out.print("Density of states in conduction band (cm^-3/eV): ");
-		double h2 = Constants.p(Constants.hbarEV, 2);
-		double a = 1 / (2 * Constants.p(Math.PI, 2));
-		double b = Constants.p(2 * Constants.mndos / h2, 3 / 2);
+		double h2 = Math.pow(Constants.hbarEV, 2);
+		double a = 1 / (2 * Math.pow(Math.PI, 2));
+		double b = Math.pow(2 * Constants.mndos / h2, 3 / 2);
 		double c = Math.sqrt(E_minus_Ec);
 		return Constants.s(a * b * c);
 	}
@@ -18,9 +18,9 @@ public class Physics {
 	/** Density of States in the Valence Band */
 	public static double gv(double Ev_minus_E) { // Review 1.16
 		System.out.print("Density of states in valence band (cm^-3/eV): ");
-		double h2 = Constants.p(Constants.hbarEV, 2);
-		double a = 1 / (2 * Constants.p(Math.PI, 2));
-		double b = Constants.p(2 * Constants.mpdos / h2, 3 / 2);
+		double h2 = Math.pow(Constants.hbarEV, 2);
+		double a = 1 / (2 * Math.pow(Math.PI, 2));
+		double b = Math.pow(2 * Constants.mpdos / h2, 3 / 2);
 		double c = Math.sqrt(Ev_minus_E);
 		return Constants.s(a * b * c);
 	}
@@ -116,28 +116,28 @@ public class Physics {
 
 	/** Low Field Hole Mobility in P-Silicon */
 	public static double u_pP(double Na) { // Review 1.42
-		double denom = 1 + Math.pow(Na / (1.6 * Constants.EE(17)), .70);
+		double denom = 1 + Math.pow(Na / (1.6e17), .70);
 		System.out.print("Low-field hole mobility in p-Si (cm^2/(V*s): ");
 		return Constants.s(49.7 + (418.3 / denom));
 	}
 
 	/** Low Field Electron Mobility in P-Silicon */
 	public static double u_nP(double Na) { // Review 1.42
-		double denom = 1 + Math.pow(Na / (8.0 * Constants.EE(16)), .90);
+		double denom = 1 + Math.pow(Na / (8.0e16), .90);
 		System.out.print("Low-field electron mobility in p-Si (cm^2/(V*s): ");
 		return Constants.s(232 + (1180 / denom));
 	}
 
 	/** Low Field Electron Mobility in N-Silicon */
 	public static double u_nN(double Nd) { // Review 1.43
-		double denom = 1 + Math.pow(Nd / (1.3 * Constants.EE(17)), .91);
+		double denom = 1 + Math.pow(Nd / (1.3e17), .91);
 		System.out.print("Low-field electron mobility in n-Si (cm^2/(V*s): ");
 		return Constants.s(92 + (1268 / denom));
 	}
 
 	/** Low Field Hole Mobility in N-Silicon */
 	public static double u_pN(double Nd) { // Review 1.43
-		double denom = 1 + Math.pow(Nd / (8.0 * Constants.EE(17)), 1.25);
+		double denom = 1 + Math.pow(Nd / (8.0e17), 1.25);
 		System.out.print("Low-field hole mobility in n-Si (cm^2/(V*s): ");
 		return Constants.s(130 + (370 / denom));
 	}
@@ -194,15 +194,13 @@ public class Physics {
 	public static double tau_recP(double Na) { // Review 1.57
 		System.out
 				.print("Minority carrier recombination lifetime in p-Si (s): ");
-		return Constants.s(1 / (3.45 * Constants.EE(-12) * Na + 9.50
-				* Constants.EE(-32) * Math.pow(Na, 2)));
+		return Constants.s(1 / (3.45e-12 * Na + 9.50e-32 * Math.pow(Na, 2)));
 	}
 
 	public static double tau_recN(double Nd) { // Review 1.57
 		System.out
 				.print("Minority carrier recombination lifetime in n-Si (s): ");
-		return Constants.s(1 / (7.80 * Constants.EE(-13) * Nd + 1.80
-				* Constants.EE(-31) * Math.pow(Nd, 2)));
+		return Constants.s(1 / (7.80e-13 * Nd + 1.80e-31 * Math.pow(Nd, 2)));
 	}
 
 	// tau_gen is 50 to 100 times tau_rec

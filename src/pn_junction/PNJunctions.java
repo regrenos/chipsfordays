@@ -8,7 +8,7 @@ public class PNJunctions {
 	public static double Vbi(double Na, double Nd) {
 		System.out.print("Built in voltage (V): ");
 		return Constants.s(Constants.kbtq
-				* Math.log((Na * Nd) / Constants.p(Constants.ni, 2)));
+				* Math.log((Na * Nd) / Math.pow(Constants.ni, 2)));
 	}
 
 	/** Depletion Region Width of PNJunction */
@@ -44,10 +44,10 @@ public class PNJunctions {
 	 */
 	public static double lawOfJunctionP(double Na, double Nd, double Vpn) {
 		System.out.print("Concentration of holes at thermal equilibrium: ");
-		double Pno = Constants.s(Nd / (Constants.p(Constants.ni, 2)));
+		double Pno = Constants.s(Nd / (Math.pow(Constants.ni, 2)));
 		System.out.println(Pno);
 		System.out.print("Holes at Depletion region edge: ");
-		return Constants.s(Pno * Constants.exp((Vpn) / Constants.kbtq));
+		return Constants.s(Pno * Math.exp((Vpn) / Constants.kbtq));
 
 	}
 
@@ -56,10 +56,10 @@ public class PNJunctions {
 	 * N Depletion Region Edges
 	 */
 	public static double lawOfJunctionN(double Na, double Nd, double Vpn) {
-		double Npo = Na / (Constants.p(Constants.ni, 2));
+		double Npo = Na / (Math.pow(Constants.ni, 2));
 		System.out.println("Npo= " + Npo);
 		System.out.print("Electrons at Depletion Region: ");
-		return Constants.s(Npo * Constants.exp((Vpn) / Constants.kbtq));
+		return Constants.s(Npo * Math.exp((Vpn) / Constants.kbtq));
 	}
 
 	/** PN-Junction Diode Current Density (12 review 2) */

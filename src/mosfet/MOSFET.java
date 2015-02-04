@@ -60,8 +60,7 @@ public class MOSFET {
 	public static double IDlin(double Kn, double VDS, double VGS, double VBS,
 			double Na, double Xox, double QfQit) {
 		double vtn = Vtn(VBS, Na, Xox, QfQit);
-		double result = Kn
-				* (((VGS - vtn) * VDS) - 0.5 * (Constants.p(VDS, 2)));
+		double result = Kn * (((VGS - vtn) * VDS) - 0.5 * (Math.pow(VDS, 2)));
 		System.out
 				.print("The drain current in the linear range for the MOSFET is (A): ");
 		return Constants.s(result);
@@ -72,7 +71,7 @@ public class MOSFET {
 			double VGS, double VBS, double Na, double Xox, double QfQit) {
 		double vtn = Vtn(VBS, Na, Xox, QfQit);
 		double vdsat = VDsat(VGS, VBS, Na, Xox, QfQit);
-		double result = (Kn / 2) * Constants.p((VGS - vtn), 2)
+		double result = (Kn / 2) * Math.pow((VGS - vtn), 2)
 				* (1 + lambda * (VDS - vdsat));
 		System.out
 				.print("The drain current in the saturation range for the MOSFET is (A): ");

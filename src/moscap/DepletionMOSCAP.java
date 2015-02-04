@@ -9,8 +9,8 @@ public class DepletionMOSCAP extends MOSCAP {
 		return Constants.s(Vgs
 				- Vfb(Na, Xox, QfQit)
 				+ (Constants.q * Constants.esi * Na)
-				/ Constants.p(Cox(Xox), 2)
-				* (1 - Math.sqrt(1 + (2 * Constants.p(Cox(Xox), 2)
+				/ Math.pow(Cox(Xox), 2)
+				* (1 - Math.sqrt(1 + (2 * Math.pow(Cox(Xox), 2)
 						/ (Constants.q * Constants.esi * Na) * (Vgs - Vfb(Na,
 						Xox, QfQit))))));
 	}
