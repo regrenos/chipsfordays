@@ -40,7 +40,8 @@ public class BipolarJunctionTransistor {
 	 * Converts common-base forward and reverse current gains into
 	 * common-emitter reverse and forward current gains.
 	 * 
-	 * @param alpha - common-base current gain
+	 * @param alpha
+	 *            - common-base current gain
 	 * @return - common-emitter current gain
 	 */
 	public static double commonBaseToCommonEmitterGain(double alpha) {
@@ -51,7 +52,8 @@ public class BipolarJunctionTransistor {
 	 * Converts common-emitter forward and reverse current gains into
 	 * common-base reverse and forward current gains.
 	 * 
-	 * @param beta - common-emitter current gain
+	 * @param beta
+	 *            - common-emitter current gain
 	 * @return - common-base current gain
 	 */
 	public static double commonEmitterToCommonBaseGain(double beta) {
@@ -113,7 +115,7 @@ public class BipolarJunctionTransistor {
 	 */
 	public static double baseCurrent(double vBE, double vBC, double betaF,
 			double betaR, double iS) {
-		return (iS / betaF) * (Math.exp(vBE / Constants.kbtq) - 1) - (iS / betaR)
-				* (Math.exp(vBC / Constants.kbtq) - 1);
+		return (iS / betaF) * (Math.exp(vBE / Constants.kbtq) - 1)
+				- (iS / betaR) * (Math.exp(vBC / Constants.kbtq) - 1);
 	}
 }

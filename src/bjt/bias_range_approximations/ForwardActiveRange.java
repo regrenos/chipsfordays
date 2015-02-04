@@ -1,4 +1,4 @@
-package bjt.bias_range_current_approximations;
+package bjt.bias_range_approximations;
 
 import util.Constants;
 
@@ -70,26 +70,32 @@ public class ForwardActiveRange {
 	}
 
 	/**
-	 * Finds the common-emitter forward current gain from the saturation and base currents.
+	 * Finds the common-emitter forward current gain from the saturation and
+	 * base currents.
 	 * 
-	 * @param iS - saturation current (A)
-	 * @param iB - base current (A)
-	 * @param vBE - base to emitter bias (V)
+	 * @param iS
+	 *            - saturation current (A)
+	 * @param iB
+	 *            - base current (A)
+	 * @param vBE
+	 *            - base to emitter bias (V)
 	 * @return - common-emitter forward current gain
 	 */
-	public static double betaFFromBaseCurrent(double iS, double iB, double vBE){
-		return (iS/iB)*(Math.exp(vBE/Constants.kbtq)-1);
+	public static double betaFFromBaseCurrent(double iS, double iB, double vBE) {
+		return (iS / iB) * (Math.exp(vBE / Constants.kbtq) - 1);
 	}
-	
+
 	/**
 	 * Calculates the common-emitter forward current gain from its definition.
 	 * 
-	 * @param iC - collector current (A)
-	 * @param iB - base current (A)
-	 * @return - common-emitter forward current gain 
+	 * @param iC
+	 *            - collector current (A)
+	 * @param iB
+	 *            - base current (A)
+	 * @return - common-emitter forward current gain
 	 */
-	public static double betaFFromDefinition(double iC, double iB){
+	public static double betaFFromDefinition(double iC, double iB) {
 		return iC / iB;
 	}
-	
+
 }

@@ -1,4 +1,4 @@
-package bjt.bias_range_current_approximations;
+package bjt.bias_range_approximations;
 
 public class CutOffRange {
 
