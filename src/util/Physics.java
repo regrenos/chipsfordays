@@ -169,9 +169,16 @@ public class Physics {
 		return Constants.s(rho * L / A);
 	}
 
-	public static double v_drift(double u, double E) {
+	/**
+	 * Drift velocity of holes or electrons.
+	 * 
+	 * @param mu - mobility of holes or electrons (cm^2/V*s)
+	 * @param E - electric field (V/cm)
+	 * @return - drift velocity (cm/s)
+	 */
+	public static double v_drift(double mu, double E) {
 		System.out.print("Drift velocity (cm/s): ");
-		return Constants.s(u * E);
+		return Constants.s(mu * E);
 	}
 
 	public static double t_drift(double L, double v_drift) {
