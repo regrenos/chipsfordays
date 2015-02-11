@@ -1,5 +1,5 @@
 # chipsfordays
-Developing a GUI-based Microelectronics Value Computer
+Developing a Microelectronics Value Computer
 
 This project aims to present a simple interface for calculations on the following microelectronic circuit components:
 - PN-Junction Diodes
