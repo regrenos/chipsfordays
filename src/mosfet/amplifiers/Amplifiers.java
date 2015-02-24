@@ -1,4 +1,4 @@
-package mosfet;
+package mosfet.amplifiers;
 
 import util.Constants;
 

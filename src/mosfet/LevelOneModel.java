@@ -41,7 +41,7 @@ public class LevelOneModel {
 	}
 	
 	/**
-	 * Fermi potential of substrate.
+	 * Fermi potential of substrate.pu
 	 * 
 	 * @param naB - concentration of acceptors in region
 	 * @return - Fermi potential
@@ -80,10 +80,37 @@ public class LevelOneModel {
 	/**
 	 * Oxide capacitance knowing oxide thickness.
 	 * 
-	 * @param xOX - oxide thickness
+	 * @param xOX - oxide thickness (cm)
 	 * @return - oxide capacitance
 	 */
 	public static double oxideCapacitance(double xOX){
 		return xOX/Constants.eox;
+	}
+	
+	/**
+	 * Drain current in the linear bias range for an NMOSFET.
+	 * 
+	 * @param kN - mobility of charge carriers * capacitance of oxide * width of channel / length of channel
+	 * @param vGS - gate to source bias (V)
+	 * @param vTN - threshold voltage (V)
+	 * @param vDS - drain to source bias (V)
+	 * @return - drain current (A)
+	 */
+	public static double linearRangeDrainCurrent(double kN, double vGS, double vTN, double vDS){
+		return kN*((vGS-vTN)*vDS-Math.pow(vDS, 2)/2);
+	}
+	
+	/**
+	 * Drain current in the saturation bias range for an NMOSFET with channel length modulation.
+	 * 
+	 * @param kN - mobility of charge carriers * capacitance of oxide * width of channel / length of channel (A/V^2)
+	 * @param vGS - gate to source bias (V)
+	 * @param vTN - threshold voltage (V)
+	 * @param vDS - drain to source bias (V)
+	 * @param lambdaN - channel length modulation factor (1/V)
+	 * @return - drain current (A)
+	 */
+	public static double saturationRangeDrainCurrent(double kN, double vGS, double vTN, double vDS, double lambdaN){
+		return kN*Math.pow(vGS-vTN,2)*(1+lambdaN*(vDS-(vGS-vTN)));
 	}
 }
