@@ -1,7 +1,8 @@
 package mosfet.amplifiers;
 
 
-public class CommonSourceBypassedSourceResistance {
+
+public class CommonSourceUnbypassedSourceResistance {
 	
 	
 	/**
@@ -72,35 +73,19 @@ public class CommonSourceBypassedSourceResistance {
 	}
 	
 	/**
-	 * Terminal voltage gain Avt for a common source bypassed source resistance NMOSFET amplifier.
+	 * Voltage gain Avt for a common source unbypassed source resistance NMOSFET amplifier.
 	 * 
 	 * @param gmsat - forward transconductance
 	 * @param rdssat - drain to source resistance (output resistance)
 	 * @param rD - drain resistance
 	 * @param rL - load resistance
-	 * @return Avt - terminal voltage gain
-	 */
-	public static double terminalVoltageGain(double gmsat, double rdssat, double rD, double rL){
-		return gmsat*rP(rdssat, rD, rL);
-	}
-	
-	private static double rP(double rdssat, double rD, double rL){
-		return 1/(1/rdssat+1/rD+1/rL);
-	}
-	
-	/**
-	 * Voltage gain for the NMOSFET amplifier.
-	 * 
-	 * @param gmsat - forward transconductance
-	 * @param rdssat - drain to source (output) resistance
-	 * @param rD - drain resistance
-	 * @param rL - load resistance
+	 * @param rS - source resistance
 	 * @param rG - gate resistance
-	 * @param rSig - signal reistance
+	 * @param rSig - signal resistance
 	 * @return Av - voltage gain
 	 */
-	public static double voltageGain(double gmsat, double rdssat, double rD, double rL, double rG, double rSig){
-		return -gmsat*rP(rdssat, rD, rL)*rG/(rSig+rG);
+	public static double voltageGain(double gmsat, double rdssat, double rD, double rL, double rS, double rG, double rSig){
+		return -(gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+(1/(1/rD+1/rL))))*(rG/(rSig+rG));
 	}
 	
 	/**
@@ -111,10 +96,11 @@ public class CommonSourceBypassedSourceResistance {
 	 * @param rD - drain resistance
 	 * @param rL - load resistance
 	 * @param rG - gate resistance
+	 * @param rS - source resistance
 	 * @return Ai - current gain
 	 */
-	public static double currentGain(double gmsat, double rdssat, double rD, double rL, double rG){
-		return -gmsat*rP(rdssat, rD, rL)*rG/rL;
+	public static double currentGain(double gmsat, double rdssat, double rD, double rL, double rG, double rS){
+		return -(gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+(1/(1/rD+1/rL))))*(rG/rL);
 	}
 	
 	/**
@@ -133,9 +119,11 @@ public class CommonSourceBypassedSourceResistance {
 	 * 
 	 * @param rdssat - drain to source (output) resistance
 	 * @param rD - drain resistance
+	 * @param rS - source resistance
+	 * @param gmsat - forward transconductance
 	 * @return Rout - output resistance
 	 */
-	public static double smallSignalOutputResistance(double rdssat, double rD){
-		return rdssat*rD/(rdssat+rD);
+	public static double smallSignalOutputResistance(double rdssat, double rD, double rS, double gmsat){
+		return rD*(rS+rdssat*(1+gmsat*rS))/(rD+rS+rdssat*(1+gmsat*rS));
 	}
 }
