@@ -45,7 +45,7 @@ public class CommonSourceBypassedSourceResistance {
 	 */
 	public static double outputResistance(double lambdaN, double vDS, double vDSat, double idsat){
 		if(lambdaN==0){
-			return 0;
+			return Double.MAX_VALUE;
 		}
 		else{
 			return (1+lambdaN*(vDS-vDSat))/(lambdaN*idsat);
@@ -64,7 +64,7 @@ public class CommonSourceBypassedSourceResistance {
 	 */
 	public static double outputResistance(double lambdaN, double vDS, double vGS, double vTN, double idsat){
 		if(lambdaN==0){
-			return 0;
+			return Double.MAX_VALUE;
 		}
 		else{
 			return (1+lambdaN*(vDS-vGS+vTN))/(lambdaN*idsat);
@@ -81,11 +81,15 @@ public class CommonSourceBypassedSourceResistance {
 	 * @return Avt - terminal voltage gain
 	 */
 	public static double terminalVoltageGain(double gmsat, double rdssat, double rD, double rL){
-		return gmsat*rP(rdssat, rD, rL);
+		return -gmsat*rP(rdssat, rD, rL);
 	}
 	
-	private static double rP(double rdssat, double rD, double rL){
+	public static double rP(double rdssat, double rD, double rL){
 		return 1/(1/rdssat+1/rD+1/rL);
+	}
+	
+	public static double rG(double r1, double r2){
+		return 1/(1/r1+1/r2);
 	}
 	
 	/**
@@ -95,12 +99,13 @@ public class CommonSourceBypassedSourceResistance {
 	 * @param rdssat - drain to source (output) resistance
 	 * @param rD - drain resistance
 	 * @param rL - load resistance
-	 * @param rG - gate resistance
+	 * @param r1 - resistance 1
+	 * @param r2 - resistance 2
 	 * @param rSig - signal reistance
 	 * @return Av - voltage gain
 	 */
-	public static double voltageGain(double gmsat, double rdssat, double rD, double rL, double rG, double rSig){
-		return -gmsat*rP(rdssat, rD, rL)*rG/(rSig+rG);
+	public static double voltageGain(double gmsat, double rdssat, double rD, double rL, double r1, double r2, double rSig){
+		return -gmsat*rP(rdssat, rD, rL)*rG(r1,r2)/(rSig+rG(r1,r2));
 	}
 	
 	/**
@@ -110,11 +115,12 @@ public class CommonSourceBypassedSourceResistance {
 	 * @param rdssat - drain to source (output) resistance
 	 * @param rD - drain resistance
 	 * @param rL - load resistance
-	 * @param rG - gate resistance
+	 * @param r1 - resistance 1
+	 * @param r2 - resistance 2
 	 * @return Ai - current gain
 	 */
-	public static double currentGain(double gmsat, double rdssat, double rD, double rL, double rG){
-		return -gmsat*rP(rdssat, rD, rL)*rG/rL;
+	public static double currentGain(double gmsat, double rdssat, double rD, double rL, double r1, double r2){
+		return -gmsat*rP(rdssat, rD, rL)*rG(r1,r2)/rL;
 	}
 	
 	/**
@@ -136,6 +142,11 @@ public class CommonSourceBypassedSourceResistance {
 	 * @return Rout - output resistance
 	 */
 	public static double smallSignalOutputResistance(double rdssat, double rD){
-		return rdssat*rD/(rdssat+rD);
+		if (rdssat == Double.MAX_VALUE){
+			return rD;
+		}
+		else{
+			return rdssat*rD/(rdssat+rD);
+		}
 	}
 }

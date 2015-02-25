@@ -46,7 +46,7 @@ public class CommonSourceUnbypassedSourceResistance {
 	 */
 	public static double outputResistance(double lambdaN, double vDS, double vDSat, double idsat){
 		if(lambdaN==0){
-			return 0;
+			return Double.MAX_VALUE;
 		}
 		else{
 			return (1+lambdaN*(vDS-vDSat))/(lambdaN*idsat);
@@ -65,7 +65,7 @@ public class CommonSourceUnbypassedSourceResistance {
 	 */
 	public static double outputResistance(double lambdaN, double vDS, double vGS, double vTN, double idsat){
 		if(lambdaN==0){
-			return 0;
+			return Double.MAX_VALUE;
 		}
 		else{
 			return (1+lambdaN*(vDS-vGS+vTN))/(lambdaN*idsat);
@@ -124,6 +124,11 @@ public class CommonSourceUnbypassedSourceResistance {
 	 * @return Rout - output resistance
 	 */
 	public static double smallSignalOutputResistance(double rdssat, double rD, double rS, double gmsat){
-		return rD*(rS+rdssat*(1+gmsat*rS))/(rD+rS+rdssat*(1+gmsat*rS));
+		if (rdssat == Double.MAX_VALUE){
+			return rD;
+		}
+		else {
+			return rD*(rS+rdssat*(1+gmsat*rS))/(rD+rS+rdssat*(1+gmsat*rS));
+		}
 	}
 }
