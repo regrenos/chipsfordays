@@ -73,6 +73,25 @@ public class CommonSourceUnbypassedSourceResistance {
 	}
 	
 	/**
+	 * Terminal voltage gain for the unbypassed souce resistance MOSFET amplifier.
+	 * 
+	 * @param gmsat - forward transconductance
+	 * @param rdssat - output resistance
+	 * @param rD - drain resistance
+	 * @param rL - load resistance
+	 * @param rS - source resistance
+	 * @return avt - terminal voltage gain
+	 */
+	public static double terminalVoltageGain(double gmsat, double rdssat, double rD, double rL, double rS){
+		if (rdssat == Double.MAX_VALUE){
+			return -gmsat*(1/(1/rD+1/rL))/(1+gmsat*rS);
+		}
+		else {
+			return -gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+1/(1/rD+1/rL));
+		}
+	}
+	
+	/**
 	 * Voltage gain Avt for a common source unbypassed source resistance NMOSFET amplifier.
 	 * 
 	 * @param gmsat - forward transconductance
@@ -84,8 +103,13 @@ public class CommonSourceUnbypassedSourceResistance {
 	 * @param rSig - signal resistance
 	 * @return Av - voltage gain
 	 */
-	public static double voltageGain(double gmsat, double rdssat, double rD, double rL, double rS, double rG, double rSig){
-		return -(gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+(1/(1/rD+1/rL))))*(rG/(rSig+rG));
+	public static double voltageGain(double gmsat, double rdssat, double rD, double rL, double rS, double r1, double r2, double rSig){
+		if (rdssat == Double.MAX_VALUE){
+			return -gmsat*(1/(1/rD+1/rL))/(1+gmsat*rS)*(rG(r1,r2)/(rSig+rG(r1,r2)));
+		}
+		else {
+			return -(gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+(1/(1/rD+1/rL))))*(rG(r1,r2)/(rSig+rG(r1,r2)));
+		}
 	}
 	
 	/**
@@ -99,8 +123,13 @@ public class CommonSourceUnbypassedSourceResistance {
 	 * @param rS - source resistance
 	 * @return Ai - current gain
 	 */
-	public static double currentGain(double gmsat, double rdssat, double rD, double rL, double rG, double rS){
-		return -(gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+(1/(1/rD+1/rL))))*(rG/rL);
+	public static double currentGain(double gmsat, double rdssat, double rD, double rL, double r1, double r2, double rS){
+		if (rdssat == Double.MAX_VALUE){
+			return -gmsat*(1/(1/rD+1/rL))/(1+gmsat*rS)*(rG(r1,r2)/rL);
+		}
+		else {
+			return -(gmsat*rdssat*(1/(1/rD+1/rL))/(rdssat*(1+gmsat*rS)+rS+(1/(1/rD+1/rL))))*(rG(r1,r2)/rL);
+		}
 	}
 	
 	/**
@@ -130,5 +159,9 @@ public class CommonSourceUnbypassedSourceResistance {
 		else {
 			return rD*(rS+rdssat*(1+gmsat*rS))/(rD+rS+rdssat*(1+gmsat*rS));
 		}
+	}
+	
+	public static double rG(double r1, double r2){
+		return 1/(1/r1+1/r2);
 	}
 }
