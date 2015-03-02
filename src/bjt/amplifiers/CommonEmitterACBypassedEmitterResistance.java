@@ -2,7 +2,7 @@ package bjt.amplifiers;
 
 import util.Constants;
 
-public class CommonEmitterACBypassedLoadResistance {
+public class CommonEmitterACBypassedEmitterResistance {
 	
 	/**
 	 * Approximate base-to-emitter bias in the forward active range. (V)
