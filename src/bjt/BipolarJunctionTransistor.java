@@ -1,5 +1,6 @@
 package bjt;
 
+import bjt.amplifiers.CommonEmitterACBypassedEmitterResistance;
 import util.Constants;
 
 /**
@@ -118,4 +119,57 @@ public class BipolarJunctionTransistor {
 		return (iS / betaF) * (Math.exp(vBE / Constants.kbtq) - 1)
 				- (iS / betaR) * (Math.exp(vBC / Constants.kbtq) - 1);
 	}
+
+	/**
+	 * Forward transconductance in the forward active range.
+	 * 
+	 * @param r1 - resistance 1
+	 * @param r2 - resistance 2
+	 * @param vCC - supply voltage
+	 * @param betaF - common emitter forward current gain
+	 * @param rE - emitter resistance
+	 * @return gmfa - forward transconductance in forward active range
+	 */
+	public static double forwardTransconductance(double r1, double r2, double vCC, double betaF, double rE){
+		return CommonEmitterACBypassedEmitterResistance.collectorCurrentApproximation(r1, r2, vCC, betaF, rE)/Constants.kbtq;
+	}
+
+	/**
+	 * Collector to emitter resistance in the forward active range. If base-width modulation is neglected, this is infinite.
+	 * 
+	 * @param vA - Early voltage
+	 * @param r1 - resistance 1
+	 * @param r2 - resistance 2
+	 * @param vCC - supply voltage
+	 * @param betaF - common emitter forward current gain
+	 * @param rE - emitter resistance
+	 * @return rCE - collector to emitter resistance
+	 */
+	public static double collectorToEmitterResistance(double vA, double r1, double r2, double vCC, double betaF, double rE){
+		if (vA == Double.MAX_VALUE){
+			return Double.MAX_VALUE; // neglecting base-width modulation
+		}
+		else{
+			return vA/(forwardTransconductance(r1, r2, vCC, betaF, rE)*Constants.kbtq);
+		}
+	}
+
+	/**
+	 * Base to emitter resistance in the forward active range.
+	 * 
+	 * @param r1 - resistance 1
+	 * @param r2 - resistance 2
+	 * @param vCC - supply voltage
+	 * @param betaF - common emitter forward current gain
+	 * @param rE - emitter resistance
+	 * @return rBE - base to emitter resistance
+	 */
+	public static double baseToEmitterResistance(double r1, double r2, double vCC, double betaF, double rE){
+		return betaF/forwardTransconductance(r1, r2, vCC, betaF, rE);
+	}
+
+	/**
+	 * Approximate base-to-emitter bias in the forward active range. (V)
+	 */
+	public static final double vBEfa = 0.7;
 }
