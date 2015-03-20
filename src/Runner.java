@@ -1,39 +1,75 @@
-import mosfet.amplifiers.CommonSourceBypassedSourceResistance;
+import bjt.amplifiers.CommonEmitterACBypassedEmitterResistance;
+import bjt.amplifiers.CommonEmitterACUnbypassedEmitterResistance;
+
+
 
 
 
 public class Runner {
 
 	public static void main(String[] args) {
-
-		double kN = 500e-6;
-		double vTN = 1;
-		double vDD = 10;
-		double rSig = 1e3;
-		double r1 = 430e3;
-		double r2 = 560e3;
-		double rD = 43e3;
-		double rS = 20e3;
-		double rL = 100e3;
-		double lambdaN = 0.0133;
 		
-		double idsat = 131.193e-6;
-		double vDS = 1.735;
-		double vGS = 1.720;
+		double vCC = 15;
+		double rC = 20e3;
+		double rE = 20e3;
+		double rE_1 = 2e3;
+		double r1 = 300e3;
+		double r2 = 180e3;
+		double betaF = 100;
+		double vA = Double.MAX_VALUE;
+		double rSig_1 = 2e3;
+		double rL_2 = 100e3;
 		
-		double rdssat = CommonSourceBypassedSourceResistance.outputResistance(lambdaN, vDS, vGS, vTN, idsat);
-		double gmsat = CommonSourceBypassedSourceResistance.forwardTransconductance(kN, idsat, lambdaN, vDS, vDS, vTN);
-		double rin = CommonSourceBypassedSourceResistance.smallSignalInputResistance(r1, r2);
-		double rout = CommonSourceBypassedSourceResistance.smallSignalOutputResistance(rdssat, rD);
-		double aV = CommonSourceBypassedSourceResistance.voltageGain(gmsat, rdssat, rD, rL, r1, r2, rSig);
-		double aVt = CommonSourceBypassedSourceResistance.terminalVoltageGain(gmsat, rdssat, rD, rL);
-		double ai = CommonSourceBypassedSourceResistance.currentGain(gmsat, rdssat, rD, rL, r1, r2);
-				
-		System.out.println("========Bypassed Source Resistance========");
-		System.out.println("Input resistance: "+rin);
-		System.out.println("Output resistance: "+rout);
-		System.out.println("Voltage gain: " + aV);
-		System.out.println("Terminal voltage gain: " + aVt);
-		System.out.println("Current gain: " + ai);				
+		double iC_1 = CommonEmitterACUnbypassedEmitterResistance.collectorCurrentApproximation(r1, r2, vCC, betaF, rE);
+		double iB_1 = CommonEmitterACUnbypassedEmitterResistance.baseCurrentApproximation(r1, r2, vCC, betaF, rE);
+		double vBC_1 = CommonEmitterACUnbypassedEmitterResistance.baseToCollectorBiasApproximation(vCC, betaF, rC, rE, r1, r2);
+		double vCE_1 = CommonEmitterACUnbypassedEmitterResistance.collectorToEmitterBiasApproximation(vCC, betaF, rC, rE, r1, r2);
+		
+		double iC_2 = CommonEmitterACBypassedEmitterResistance.collectorCurrentApproximation(r1, r2, vCC, betaF, rE);
+		double iB_2 = CommonEmitterACBypassedEmitterResistance.baseCurrentApproximation(r1, r2, vCC, betaF, rE);
+		double vBC_2 = CommonEmitterACBypassedEmitterResistance.baseToCollectorBiasApproximation(vCC, betaF, rC, rE, r1, r2);
+		double vCE_2 = CommonEmitterACBypassedEmitterResistance.collectorToEmitterBiasApproximation(vCC, betaF, rC, rE, r1, r2);	
+		
+		double rout_1 = CommonEmitterACUnbypassedEmitterResistance.outputResistance(vA, r1, r2, vCC, betaF, rE_1, rC, rSig_1);
+		double rSig_2 = rout_1;
+		
+		double avt_2 = CommonEmitterACBypassedEmitterResistance.terminalVoltageGain(vA, r1, r2, vCC, betaF, rE, rC, rL_2);
+		double av_2 = CommonEmitterACBypassedEmitterResistance.voltageGain(vA, r1, r2, vCC, betaF, rE, rC, rL_2, rSig_2);
+		double rin_2 = CommonEmitterACBypassedEmitterResistance.inputResistance(r1, r2, vCC, betaF, rE);
+		double rL_1 = rin_2;
+		
+		double avt_1 = CommonEmitterACUnbypassedEmitterResistance.terminalVoltageGain(vA, r1, r2, vCC, betaF, rE_1, rC, rL_1);
+		double av_1 = CommonEmitterACUnbypassedEmitterResistance.voltageGain(vA, r1, r2, vCC, betaF, rE_1, rC, rL_1, rSig_1);
+		
+		double rin_1 = CommonEmitterACUnbypassedEmitterResistance.inputResistance(r1, r2, vCC, betaF, rE_1, rC, rL_1, vA);
+		double rout_2 = CommonEmitterACBypassedEmitterResistance.outputResistance(vA, r1, r2, vCC, betaF, rE, rC);
+		
+		double ai_1 = CommonEmitterACUnbypassedEmitterResistance.currentGain(vA, r1, r2, vCC, betaF, rE_1, rC, rL_1);
+		double ai_2 = CommonEmitterACBypassedEmitterResistance.currentGain(vA, r1, r2, vCC, betaF, rE, rC, rL_2);
+		
+		double av = av_1*av_2;
+		double ai = ai_1*ai_2;
+		double rin = rin_1;
+		double rout = rout_2;
+		
+		System.out.println("============================== Problem 1 =============================");
+		System.out.println("\t \t --- Quiescent Point ---");
+		System.out.println("\t \t \t|-------- Q1 -------|\t|-------- Q2 -------|");
+		System.out.println("Collector Current: \t " + iC_1 + "\t " + iC_2);
+		System.out.println("Base Current: \t \t " + iB_1 + "\t " + iB_2);
+		System.out.println("Base/Collector Bias: \t " + vBC_1 + "\t " + vBC_2);
+		System.out.println("Collector/Emitter Bias:\t " + vCE_1 + "\t " + vCE_2);
+		System.out.println(" \t \t --- Small Signal Paramteters ---");
+		System.out.println("Terminal Gain: \t \t " + avt_1 + "\t " + avt_2);
+		System.out.println("Voltage Gain: \t \t " + av_1 + "\t " + av_2);
+		System.out.println("Current Gain: \t \t " + ai_1 + "\t " + ai_2);
+		System.out.println("Input Resistance: \t " + rin_1 + "\t " + rin_2);
+		System.out.println("Output Resistance:\t " + rout_1 + "\t \t " + rout_2);
+		System.out.println("\t \t --- Overall Characteristics ---");
+		System.out.println("Voltage Gain: " + av);
+		System.out.println("Current Gain: " + ai);
+		System.out.println("Input Resistance: " + rin);
+		System.out.println("Output Resistance: " + rout);
+		
 	}
 }
