@@ -172,4 +172,17 @@ public class BipolarJunctionTransistor {
 	 * Approximate base-to-emitter bias in the forward active range. (V)
 	 */
 	public static final double vBEfa = 0.7;
+	
+	/**
+	 * Saturation current of a BJT from knowing the Early Voltage
+	 * 
+	 * @param iC - collector current
+	 * @param vCE - collector to emitter bias
+	 * @param vA - early voltage
+	 * @param vBE - base to emitter bias
+	 * @return iS - saturation current
+	 */
+	public static double saturationCurrent(double iC, double vCE, double vA, double vBE){
+		return iC/((1+vCE/vA)*Math.exp(vBE/Constants.kbtq));
+	}
 }

@@ -1,75 +1,89 @@
-import bjt.amplifiers.CommonEmitterACBypassedEmitterResistance;
-import bjt.amplifiers.CommonEmitterACUnbypassedEmitterResistance;
-
-
-
+import bjt.BipolarJunctionTransistor;
+import bjt.amplifiers.DifferentialPair;
 
 
 public class Runner {
 
 	public static void main(String[] args) {
 		
+		problemOne();
+		problemTwo();
+		problemThree();
+		problemFour();
+		problemFive();
+		
+	}
+
+	private static void problemOne() {
+		// 15.1
 		double vCC = 15;
-		double rC = 20e3;
-		double rE = 20e3;
-		double rE_1 = 2e3;
-		double r1 = 300e3;
-		double r2 = 180e3;
-		double betaF = 100;
-		double vA = Double.MAX_VALUE;
-		double rSig_1 = 2e3;
-		double rL_2 = 100e3;
+		double vEE = 15;
+		double rEE = 270e3;
+		double rC = 330e3;
+		double bF = 100;
+		double vA = 70;
+		double aF = BipolarJunctionTransistor.commonEmitterToCommonBaseGain(bF);
+		double vIN = 0;
 		
-		double iC_1 = CommonEmitterACUnbypassedEmitterResistance.collectorCurrentApproximation(r1, r2, vCC, betaF, rE);
-		double iB_1 = CommonEmitterACUnbypassedEmitterResistance.baseCurrentApproximation(r1, r2, vCC, betaF, rE);
-		double vBC_1 = CommonEmitterACUnbypassedEmitterResistance.baseToCollectorBiasApproximation(vCC, betaF, rC, rE, r1, r2);
-		double vCE_1 = CommonEmitterACUnbypassedEmitterResistance.collectorToEmitterBiasApproximation(vCC, betaF, rC, rE, r1, r2);
+		// a)
+		double iC = DifferentialPair.collectorCurrent(vIN, vEE, rEE, aF);
+		double iB = DifferentialPair.baseCurrent(vIN, vEE, rEE, aF, bF);
+		double iE = DifferentialPair.emitterCurrent(vIN, vEE, rEE);
+		double vCE = DifferentialPair.collectorToEmitterBias(vCC, rC, vIN, vEE, rEE, aF);
 		
-		double iC_2 = CommonEmitterACBypassedEmitterResistance.collectorCurrentApproximation(r1, r2, vCC, betaF, rE);
-		double iB_2 = CommonEmitterACBypassedEmitterResistance.baseCurrentApproximation(r1, r2, vCC, betaF, rE);
-		double vBC_2 = CommonEmitterACBypassedEmitterResistance.baseToCollectorBiasApproximation(vCC, betaF, rC, rE, r1, r2);
-		double vCE_2 = CommonEmitterACBypassedEmitterResistance.collectorToEmitterBiasApproximation(vCC, betaF, rC, rE, r1, r2);	
+		// b)
+		double Add = DifferentialPair.differentialModeGain(vIN, vEE, rEE, aF, rC);
+		double Rid = DifferentialPair.differentialModeInputResistance(vIN, vEE, rEE, aF, bF);
+		double Rod = DifferentialPair.differentialModeOutputResistance(rC, vA, vIN, vEE, rEE, aF);
 		
-		double rout_1 = CommonEmitterACUnbypassedEmitterResistance.outputResistance(vA, r1, r2, vCC, betaF, rE_1, rC, rSig_1);
-		double rSig_2 = rout_1;
+		// c)
+		double Acc = DifferentialPair.commonModeGain(rC, bF, vIN, vEE, rEE, aF, vA);
+		double Ric = DifferentialPair.commonModeInputResistance(bF, vIN, vEE, rEE, aF);
+		double CMMR = DifferentialPair.commonModeRejectionRatio(rC, bF, vIN, vEE, rEE, aF, vA);
 		
-		double avt_2 = CommonEmitterACBypassedEmitterResistance.terminalVoltageGain(vA, r1, r2, vCC, betaF, rE, rC, rL_2);
-		double av_2 = CommonEmitterACBypassedEmitterResistance.voltageGain(vA, r1, r2, vCC, betaF, rE, rC, rL_2, rSig_2);
-		double rin_2 = CommonEmitterACBypassedEmitterResistance.inputResistance(r1, r2, vCC, betaF, rE);
-		double rL_1 = rin_2;
+		System.out.println("===================== Problem 15.1 =====================");
+		System.out.println("a) Quiescent Operating Point");
+		System.out.println("\t Collector Current: \t" + iC);
+		System.out.println("\t Base Current: \t\t" + iB);
+		System.out.println("\t Emitter Current: \t" + iE);
+		System.out.println("\t Collector/Emitter Bias:" + vCE);
+		System.out.println("b) Differential-Mode Operation");
+		System.out.println("\t Gain: \t\t\t" + Add);
+		System.out.println("\t Input Resistance: \t" + Rid);
+		System.out.println("\t Output Resistance: \t" + Rod);
+		System.out.println("c) Common-Mode Operation");
+		System.out.println("\t Gain: \t\t\t" + Acc);
+		System.out.println("\t Input Resistance: \t" + Ric);
+		System.out.println("\t CMMR: \t\t\t" + CMMR);
+	}
+
+	private static void problemTwo() {
+		// 15.13
+		double vCC = 12;
+		double vEE = 12;
+		double bF = 120;
+		double iEE = 200e-6;
+		double rC = 100e3;
+		double vA = 70;
 		
-		double avt_1 = CommonEmitterACUnbypassedEmitterResistance.terminalVoltageGain(vA, r1, r2, vCC, betaF, rE_1, rC, rL_1);
-		double av_1 = CommonEmitterACUnbypassedEmitterResistance.voltageGain(vA, r1, r2, vCC, betaF, rE_1, rC, rL_1, rSig_1);
+		// a)
 		
-		double rin_1 = CommonEmitterACUnbypassedEmitterResistance.inputResistance(r1, r2, vCC, betaF, rE_1, rC, rL_1, vA);
-		double rout_2 = CommonEmitterACBypassedEmitterResistance.outputResistance(vA, r1, r2, vCC, betaF, rE, rC);
+		// b)
 		
-		double ai_1 = CommonEmitterACUnbypassedEmitterResistance.currentGain(vA, r1, r2, vCC, betaF, rE_1, rC, rL_1);
-		double ai_2 = CommonEmitterACBypassedEmitterResistance.currentGain(vA, r1, r2, vCC, betaF, rE, rC, rL_2);
+	}
+
+	private static void problemThree() {
+		// 15.14
 		
-		double av = av_1*av_2;
-		double ai = ai_1*ai_2;
-		double rin = rin_1;
-		double rout = rout_2;
+	}
+
+	private static void problemFour() {
+		// 15.33
 		
-		System.out.println("============================== Problem 1 =============================");
-		System.out.println("\t \t --- Quiescent Point ---");
-		System.out.println("\t \t \t|-------- Q1 -------|\t|-------- Q2 -------|");
-		System.out.println("Collector Current: \t " + iC_1 + "\t " + iC_2);
-		System.out.println("Base Current: \t \t " + iB_1 + "\t " + iB_2);
-		System.out.println("Base/Collector Bias: \t " + vBC_1 + "\t " + vBC_2);
-		System.out.println("Collector/Emitter Bias:\t " + vCE_1 + "\t " + vCE_2);
-		System.out.println(" \t \t --- Small Signal Paramteters ---");
-		System.out.println("Terminal Gain: \t \t " + avt_1 + "\t " + avt_2);
-		System.out.println("Voltage Gain: \t \t " + av_1 + "\t " + av_2);
-		System.out.println("Current Gain: \t \t " + ai_1 + "\t " + ai_2);
-		System.out.println("Input Resistance: \t " + rin_1 + "\t " + rin_2);
-		System.out.println("Output Resistance:\t " + rout_1 + "\t \t " + rout_2);
-		System.out.println("\t \t --- Overall Characteristics ---");
-		System.out.println("Voltage Gain: " + av);
-		System.out.println("Current Gain: " + ai);
-		System.out.println("Input Resistance: " + rin);
-		System.out.println("Output Resistance: " + rout);
+	}
+
+	private static void problemFive() {
+		// 15.45
 		
 	}
 }
