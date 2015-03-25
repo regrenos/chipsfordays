@@ -3,7 +3,7 @@ package bjt.amplifiers;
 import util.Constants;
 import bjt.BipolarJunctionTransistor;
 
-public class DifferentialPair {
+public class BJTDifferentialPair {
 	
 	/**
 	 * Emitter current for both BJTs in the differential pair.	

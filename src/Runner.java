@@ -1,5 +1,6 @@
+import mosfet.amplifiers.CommonSourceBypassedSourceResistance;
 import bjt.BipolarJunctionTransistor;
-import bjt.amplifiers.DifferentialPair;
+import bjt.amplifiers.BJTDifferentialPair;
 
 
 public class Runner {
@@ -26,20 +27,20 @@ public class Runner {
 		double vIN = 0;
 		
 		// a)
-		double iC = DifferentialPair.collectorCurrent(vIN, vEE, rEE, aF);
-		double iB = DifferentialPair.baseCurrent(vIN, vEE, rEE, aF, bF);
-		double iE = DifferentialPair.emitterCurrent(vIN, vEE, rEE);
-		double vCE = DifferentialPair.collectorToEmitterBias(vCC, rC, vIN, vEE, rEE, aF);
+		double iC = BJTDifferentialPair.collectorCurrent(vIN, vEE, rEE, aF);
+		double iB = BJTDifferentialPair.baseCurrent(vIN, vEE, rEE, aF, bF);
+		double iE = BJTDifferentialPair.emitterCurrent(vIN, vEE, rEE);
+		double vCE = BJTDifferentialPair.collectorToEmitterBias(vCC, rC, vIN, vEE, rEE, aF);
 		
 		// b)
-		double Add = DifferentialPair.differentialModeGain(vIN, vEE, rEE, aF, rC);
-		double Rid = DifferentialPair.differentialModeInputResistance(vIN, vEE, rEE, aF, bF);
-		double Rod = DifferentialPair.differentialModeOutputResistance(rC, vA, vIN, vEE, rEE, aF);
+		double Add = BJTDifferentialPair.differentialModeGain(vIN, vEE, rEE, aF, rC);
+		double Rid = BJTDifferentialPair.differentialModeInputResistance(vIN, vEE, rEE, aF, bF);
+		double Rod = BJTDifferentialPair.differentialModeOutputResistance(rC, vA, vIN, vEE, rEE, aF);
 		
 		// c)
-		double Acc = DifferentialPair.commonModeGain(rC, bF, vIN, vEE, rEE, aF, vA);
-		double Ric = DifferentialPair.commonModeInputResistance(bF, vIN, vEE, rEE, aF);
-		double CMMR = DifferentialPair.commonModeRejectionRatio(rC, bF, vIN, vEE, rEE, aF, vA);
+		double Acc = BJTDifferentialPair.commonModeGain(rC, bF, vIN, vEE, rEE, aF, vA);
+		double Ric = BJTDifferentialPair.commonModeInputResistance(bF, vIN, vEE, rEE, aF);
+		double CMMR = BJTDifferentialPair.commonModeRejectionRatio(rC, bF, vIN, vEE, rEE, aF, vA);
 		
 		System.out.println("===================== Problem 15.1 =====================");
 		System.out.println("a) Quiescent Operating Point");
@@ -74,6 +75,29 @@ public class Runner {
 
 	private static void problemThree() {
 		// 15.14
+		double vDD = 15;
+		double vSS = 15;
+		double iSS = 300e-6;
+		double rSS = 160e3;
+		double rD = 75e3;
+		double kN = 400e-6;
+		double gamma = 0.75;
+		double lambda = 0.02;
+		double phiF = 0.3;
+		double vTN0 = 1;
+		
+		double iD = 0.00015;
+		double vBS = -11.193;
+		double vDS = 7.557;
+		double vGS = 3.807;
+		double vTN = 2.995;
+		
+		double gmsat = CommonSourceBypassedSourceResistance.forwardTransconductance(kN, iD, lambda, vDS, vGS, vTN);
+		double rdssat = CommonSourceBypassedSourceResistance.outputResistance(lambda, vDS, vGS, vTN, iD);
+		
+		System.out.println("===================== Problem 15.1 =====================");
+		System.out.println("Forward Transconductance: \t" + gmsat);
+		System.out.println("Output Resistance:\t\t" + rdssat);
 		
 	}
 
