@@ -113,4 +113,70 @@ public class LevelOneModel {
 	public static double saturationRangeDrainCurrent(double kN, double vGS, double vTN, double vDS, double lambdaN){
 		return kN*Math.pow(vGS-vTN,2)*(1+lambdaN*(vDS-(vGS-vTN)));
 	}
+
+	/**
+	 * Forward transconductance for a NMOSFET in the saturation range.
+	 * 
+	 * @param kN - mu * Cox * W / L
+	 * @param id - drain current
+	 * @param lambdaN - channel length modulation factor
+	 * @param vDS - drain t0 source bias
+	 * @param vDSat - vGS-vTN
+	 * @return gmsat - forward transconductance
+	 */
+	public static double forwardTransconductance(double kN, double id, double lambdaN, double vDS, double vDSat){
+		return Math.sqrt(2*kN*id*(1+lambdaN*(vDS-vDSat)));
+	}
+
+	/**
+	 * Forward transconductance for a NMOSFET in the saturation range.
+	 * 
+	 * @param kN - mu * Cox * W / L
+	 * @param id - drain current
+	 * @param lambdaN - channel length modulation factor
+	 * @param vDS - drain t0 source bias
+	 * @param vGS - gate to source bias
+	 * @param vTN - threshold voltage
+	 * @return gmsat - forward transconductance
+	 */
+	public static double forwardTransconductance(double kN, double id, double lambdaN, double vDS, double vGS, double vTN){
+		return Math.sqrt(2*kN*id*(1+lambdaN*(vDS-vGS+vTN)));
+	}
+
+	/**
+	 * Output resistance (also drain-to-source resistance) of NMOSFET in saturation range.
+	 * 
+	 * @param lambdaN - channel length modulation factor
+	 * @param vDS - drain to source bias
+	 * @param vDSat - vGS-vTN
+	 * @param idsat - drain current
+	 * @return ro - output resistance
+	 */
+	public static double outputResistance(double lambdaN, double vDS, double vDSat, double idsat){
+		if(lambdaN==0){
+			return Double.MAX_VALUE;
+		}
+		else{
+			return (1+lambdaN*(vDS-vDSat))/(lambdaN*idsat);
+		}
+	}
+
+	/**
+	 * Output resistance (also drain-to-source resistance) of NMOSFET in saturation range.
+	 * 
+	 * @param lambdaN - channel length modulation factor
+	 * @param vDS - drain to source bias
+	 * @param vGS - gate to source bias
+	 * @param vTN - threshold voltage
+	 * @param idsat - drain current
+	 * @return ro - output resistance
+	 */
+	public static double outputResistance(double lambdaN, double vDS, double vGS, double vTN, double idsat){
+		if(lambdaN==0){
+			return Double.MAX_VALUE;
+		}
+		else{
+			return (1+lambdaN*(vDS-vGS+vTN))/(lambdaN*idsat);
+		}
+	}
 }
