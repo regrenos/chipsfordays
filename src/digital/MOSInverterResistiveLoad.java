@@ -24,7 +24,7 @@ public class MOSInverterResistiveLoad {
 	 * @return vOL
 	 */
 	public static double outputLow(double vDD, double vTN, double kN, double rL){
-		return (vDD-vTN+1/(kN*rL)) - Math.sqrt((vDD-vTN+1/(kN*rL))-2*vDD/(kN*rL));
+		return (vDD-vTN+1/(kN*rL)) - Math.sqrt(Math.pow(vDD-vTN+1/(kN*rL),2)-2*vDD/(kN*rL));
 	}
 	
 	/**
